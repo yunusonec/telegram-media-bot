@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: telegram-media-bot
+    runtime: docker
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: BOT_TOKEN
+        sync: false
+      - key: SEND_ORIG_AS_DOCUMENT
+        value: "false"
+      - key: PORT
+        value: "8080"
