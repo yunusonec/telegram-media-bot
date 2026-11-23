@@ -244,18 +244,20 @@ async def main() -> None:
     if not BOT_TOKEN or "ABCdef" in BOT_TOKEN:
         logger.error("Lütfen .env dosyasına veya sunucu ortam değişkenlerine geçerli bir BOT_TOKEN girin!")
         return
-
     runner = await start_keep_alive_server()
     bot = Bot(token=BOT_TOKEN)
     try:
-        # Önceki webhook kalıntılarını temizle ve polling başlat
-    
         logger.info("Telegram Bot başlatıldı ve 7/24 mesajları dinliyor...")
-        await dp.start_polling(bot)
+        while True:
+            try:
+                await dp.start_polling(bot, handle_signals=False)
+                break
+            except Exception as e:
+                logger.warning(f"Telegram 32sn bekleme sınırı, 35 saniye beklenip devam edilecek: {e}")
+                await asyncio.sleep(35)
     finally:
+        await bot.session.close()
         await runner.cleanup()
-
-
 if __name__ == "__main__":
     try:
         asyncio.run(main())
