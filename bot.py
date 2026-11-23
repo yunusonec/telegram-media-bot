@@ -249,7 +249,7 @@ async def main() -> None:
     bot = Bot(token=BOT_TOKEN)
     try:
         # Önceki webhook kalıntılarını temizle ve polling başlat
-        await bot.delete_webhook(drop_pending_updates=True)
+    
         logger.info("Telegram Bot başlatıldı ve 7/24 mesajları dinliyor...")
         await dp.start_polling(bot)
     finally:
